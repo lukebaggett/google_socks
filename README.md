@@ -27,3 +27,6 @@ Follow these steps to get started:
       -j JITTER   Amount of randomness in polling (default: 1.0)
       -v          Enable verbose output
       --debug     Enable debug output
+
+###Performance Tip
+If you need to send data as fast as possible, set no polling (-P 0) or jitter (-j 0). If you get an error from going over the API rate limit, try raising your polling time little by little until you find a sweetspot. I found .2 seconds worked well.
