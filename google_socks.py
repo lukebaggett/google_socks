@@ -19,9 +19,9 @@ import httplib2
 import io
 from googleapiclient.http import BatchHttpRequest
 
-# PASTE NEW CREDENTIALS HERE
 def get_credential(index):
     credentials = []
+    # PASTE NEW CREDENTIALS HERE
     return credentials[index]
 
 class ThreadingTCPServer(SocketServer.ThreadingMixIn, SocketServer.TCPServer):
