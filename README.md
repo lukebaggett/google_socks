@@ -1,5 +1,7 @@
 This script is used to allow two sockets to communicate while relaying data through Google Drive.
 
+Check out this [blog post](http://www.blackhillsinfosec.com/?p=5230) for more details.
+
 Follow these steps to get started:
 
 1. Install needed python modules (see below)
