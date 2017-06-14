@@ -8,11 +8,11 @@ Follow these steps to get started:
 2. Run "python ./google_socks.py --setup" and follow the instructions
 3. Read the help information here: "python ./google_socks.py -h"
 
-###Needed Python Modules
+### Needed Python Modules
     pip install oauth2client
     pip install google-api-python-client
 
-###Help
+### Help
     Usage: google_socks.py [options]
     
     Options:
@@ -30,5 +30,5 @@ Follow these steps to get started:
       -v          Enable verbose output
       --debug     Enable debug output
 
-###Performance Tip
+### Performance Tip
 If you need to send data as fast as possible, set no polling (-P 0) or jitter (-j 0). If you get an error from going over the API rate limit, try raising your polling time little by little until you find a sweetspot. I found .2 seconds worked well.
