@@ -18,6 +18,7 @@ import io
 from googleapiclient.http import BatchHttpRequest
 
 import google.oauth2.credentials
+import google_auth_oauthlib.flow
 import google.auth
 
 service = None
@@ -80,8 +81,6 @@ It must be named "client_secrets.json"
 
 [continue]""")
     #verbose("Creating flow object from client_secrets.json...")
-    import google.oauth2.credentials
-    import google_auth_oauthlib.flow
 
     flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file(
         'client_secrets.json',
