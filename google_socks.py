@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 from optparse import OptionParser
-from oauth2client.client import GoogleCredentials
-from oauth2client import client
 import sys
 import base64
 import subprocess
@@ -18,6 +16,12 @@ import apiclient
 import httplib2
 import io
 from googleapiclient.http import BatchHttpRequest
+
+import google.oauth2.credentials
+import google_auth_oauthlib.flow
+import google.auth
+
+service = None
 
 def get_credential(index):
     credentials = []
@@ -77,29 +81,33 @@ It must be named "client_secrets.json"
 
 [continue]""")
     #verbose("Creating flow object from client_secrets.json...")
-    flow = client.flow_from_clientsecrets(
-        "client_secrets.json",
-        scope = [
+
+    flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file(
+        'client_secrets.json',
+        scopes = [
             'https://www.googleapis.com/auth/drive',
             'https://spreadsheets.google.com/feeds/'
-        ],
-        redirect_uri='urn:ietf:wg:oauth:2.0:oob')
-    auth_uri = flow.step1_get_authorize_url()
+        ])
+    flow.redirect_uri = 'urn:ietf:wg:oauth:2.0:oob'
+
+    auth_uri, state = flow.authorization_url(access_type='offline')
+
     print "\nOpen this URL in your browser: \n\n" + auth_uri + "\n"
     auth_code = raw_input('Enter the authentication code: ')
     #verbose("Retrieving full credentials...")
-    credentials = flow.step2_exchange(auth_code)
+    flow.fetch_token(code=auth_code)
+    credentials = flow.credentials
     raw_input("""
 Success! API Credentials Created!
 
 Copy and Paste this code into the top of this python script to store this credential
 
-credentials.append(GoogleCredentials(None,"%s","%s","%s",None,"https://accounts.google.com/o/oauth2/token",None))
+credentials.append(google.oauth2.credentials.Credentials("", refresh_token="%s", client_id="%s", client_secret="%s", token_uri="https://accounts.google.com/o/oauth2/token"))
 
 When you run this script, you can specify which credentials to use via -c
 
 [continue]
-""" % (credentials.client_id, credentials.client_secret, credentials.refresh_token))
+""" % (credentials.refresh_token, credentials.client_id, credentials.client_secret))
     raw_input("""
 
 IMPORTANT PERFORMANCE TIP:
@@ -135,7 +143,7 @@ def clear_files(service, name1, name2):
 
 def read_data(service, recv):
     data = ""
-    results = service.files().list(orderBy='createdTime', q=('name="' + str(recv) + '"'), pageSize=1000, fields="nextPageToken, files(id)").execute()['files']
+    results = service.files().list(orderBy='createdTime', q=('name="' + str(recv) + '"'), fields="nextPageToken, files(id)").execute()['files']
     if results == []:
         return data
     batch = service.new_batch_http_request()
@@ -260,10 +268,8 @@ def main():
     try:
         verbose("Authenticating...")
         global service
-        global http
-        http = credentials.authorize(httplib2.Http())
-        service = discovery.build('drive', 'v3', http=http)
-    except:
+        service = discovery.build('drive', 'v3', credentials=credentials)
+    except Exception, e:
         sys.exit("Auth failure!")
 
     verbose("Drive Authentication Successful.")
