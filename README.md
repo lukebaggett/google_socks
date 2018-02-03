@@ -2,11 +2,20 @@ This script is used to allow two sockets to communicate while relaying data thro
 
 Check out this [blog post](http://www.blackhillsinfosec.com/?p=5230) for more details.
 
-Follow these steps to get started:
+### Setup Process
 
-1. Install needed python modules (see below)
-2. Run "python2 ./google_socks.py --setup" and follow the instructions
-3. Read the help information here: "python ./google_socks.py -h"
+* Install needed python modules (see below)
+* Run "python2 ./google_socks.py --setup" and follow the instructions
+  * [Create a Google API Project](https://console.developers.google.com/projectcreate)
+  * [Create OAuth client ID credentials for the project](https://console.developers.google.com/apis/credentials)
+  * [Download the JSON for those credentials](https://console.developers.google.com/apis/credentials)
+  * Move the credentials file to the google_socks directory and name it "client_secrets.json"
+  * Next, the setup script will give you a Google link and ask for a secret
+  * Follow the link, authorize the script to use the API, and receive the secret
+  * Paste the secret back into the setup script's prompt
+  * [Copy the provided python code into the google_socks.py file below "# PASTE NEW CREDENTIALS HERE"](https://github.com/lukebaggett/google_socks/blob/master/google_socks.py#L28)
+  * All done!
+* Read the help information here: "python ./google_socks.py -h"
 
 ### Needed Python Modules
     pip2 install google-auth google-auth-oauthlib google-auth-httplib2 python-dateutil google-api-python-client
