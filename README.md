@@ -14,6 +14,7 @@ Check out this [blog post](http://www.blackhillsinfosec.com/?p=5230) for more de
   * Follow the link, authorize the script to use the API, and receive the secret
   * Paste the secret back into the setup script's prompt
   * [Copy the provided python code into the google_socks.py file below "# PASTE NEW CREDENTIALS HERE"](https://github.com/lukebaggett/google_socks/blob/master/google_socks.py#L28)
+  * [Enable the Google Drive API](https://console.developers.google.com/apis/api/drive.googleapis.com/overview)
   * All done!
 * Read the help information here: "python ./google_socks.py -h"
 
